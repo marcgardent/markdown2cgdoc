@@ -1,20 +1,101 @@
-param([String]$source, [Hashtable]$CONSTANTS)
+param([String]$Source, [String]$Destination, [String]$reviewDest, $MultiLeagues = 0)
 #Requires -Modules Microsoft.PowerShell.Utility
 
 #################################################################################
-############################# Constants    ######################################
+# CONFIGURATION                                                                 #
 #################################################################################
 
-$sections = @{
-    'The Goal'= @{ sections='statement-goal'; body='statement-goal-content'; icon='icon-goal' } 
-    'Rules' = @{ section='statement-rules'; body='statement-rules-content'; icon='icon-rules' }
-    'Expert Rules' = @{ section='statement-expertrules'; body='statement-expert-rules-content'; icon='icon-expertrules' }
-    'Note' =  @{ section='statement-warning'; body='statement-warning-content'; icon='icon-warning' } 
-    'Example' =@{ section='statement-examples'; body='statement-examples-text'; icon='icon-example' } 
+$REPLACE_REGEX = @(
+    @{ regex = '[^`]`\s*([a-z][^`]*)\s*`'; replace = '<var>$1</var>' },
+    @{ regex = '`\s*([A-Z][^`]*)\s*`'; replace = '<action>$1</action>' },
+    @{ regex = '`\s*((-|\+\s*)?[0-9][^`]*)\s*`'; replace = '<const>$1</const>' }
+)
+
+$HEADER3_CSS = 'font-size:14px;font-weight:700;padding-top:15px;color:#838891;padding-bottom:15px';
+
+$INSERT_REGEX = @(
+    @{ regex = '^\|.+\|$'; insert = '{.marked}' }
+    @{ regex = '^###\s'; insert = "{style=`"$HEADER3_CSS`"}" }
+)
+
+$FILTER_REGEX = '^(([^:]+)\s+)?([A-Z]+)\s*(>=|<=|==)\s*(\d)s*$';
+$HEADER_REGEX = '^(#+)\s*(.*)\s*$'
+
+#################################################################################
+$DEFAULT_PLAIN = { param ($node, $layout, $title, $content)
+"
+<div class='todo-implement-render' style='color:red'>
+<h$($node.level)>$title</h$($node.level)>
+
+$content
+
+</div>
+"
 }
 
-$constants_warn = $CONSTANTS.Keys -join '|';
-$sections_warn = ($sections.Keys | % {"'# $_'"}) -join '|';
+$DEFAULT_H2 = { param ($node, $layout, $title, $content)
+    $name = $layout.name; 
+    "
+<!-- $name -->
+<div class='statement-section statement-$name'>
+<h2 style='padding-top:15px'><span>$title</span>
+</h2>
+<div class='statement-$name-content'>
+
+$content
+
+</div>
+</div>";        
+}
+
+#################################################################################
+$SECTION_CG_H2 = { param ($node, $layout, $title, $content)
+    $name = $layout.name;
+    "
+<!-- $name -->
+<div class='statement-section statement-$name'>
+<h2><span class='icon icon-$name'>&nbsp;</span><span>$title</span></h2>
+<div class='statement-$name-content'>
+$content
+</div>
+</div>";
+}
+
+#################################################################################
+$CONDITION_BLOCK_CG_H3 = { param ($node, $layout, $title, $content)
+    $name = $layout.name;
+    "<div class='statement-$name-conditions'>
+    <div class='icon $name'></div><div class='blk'>
+        <div class='title'>$title</div>
+        <div class='text'>
+$content            
+</div>
+    </div>
+</div>"
+}
+
+#################################################################################
+$LAYOUT = @(
+    @{ token = '🎯'; name = 'goal'; label = 'The Goal'; render = $SECTION_CG_H2 },
+    @{ token = '🐯'; name = 'expertrules'; label = 'Expert Rules'; render = $SECTION_CG_H2 },
+    @{ token = '⚠️'; name = 'warning'; label = 'Note'; render = $SECTION_CG_H2 },
+    @{ token = '🧾'; name = 'protocol'; label = 'Game Protocol'; render = $SECTION_CG_H2
+        accepts = @(
+            @{ token = '👀'; name = 'input'; label = 'Input'; accepts = @( @{token = '📑'; label = 'Line'; render = $DEFAULT_PLAIN }) },
+            @{ token = '💬'; name = 'output'; label = 'Output'; accepts = @( @{token = '📑'; label = 'Line' ; render = $DEFAULT_PLAIN }) }
+        )
+    },
+    @{ token = '📝'; name = 'pseudocode'; label = 'Pseudocode'; render = $SECTION_CG_H2 },
+    @{ token = '💡'; name = 'hint'; label = 'Hint'; render = $SECTION_CG_H2 },
+    @{ token = '✔️'; name = 'rules'; label = 'Rules'; render = $SECTION_CG_H2
+        accepts = @(
+            @{ token = '🏆'; name = 'victory'; label = 'Victory Conditions'; render = $CONDITION_BLOCK_CG_H3 },
+            @{ token = '☠️'; name = 'lose'; label = 'Defeat Conditions'; render = $CONDITION_BLOCK_CG_H3 }
+        )
+    }
+    @{ token = '🎯'; name = 'goal'; label = 'The Goal'; render = $SECTION_CG_H2 },
+    @{ token = ''; name = 'default'; label = 'Custom section'; render = $DEFAULT_H2 }
+)
 
 #################################################################################
 ############################### parsing methods     #############################
@@ -31,39 +112,39 @@ function getParent($child, $level) {
     return $ret;
 }
 
-function parseFilter ($node) {
-    $parsed= $node.title | Select-String -Pattern '^(([^:]+):\s*)?([A-Z]+)\s*(>=|<=|==)\s*(\d)s*$' -CaseSensitive
-    if($parsed.Matches.Success){
+function parseFilter ($node, $parameters) {
+    $parsed = $node.title | Select-String -Pattern $FILTER_REGEX -CaseSensitive
+    if ($parsed.Matches.Success) {
         $label = $parsed.Matches.Groups[2].Value;
         $reference = $parsed.Matches.Groups[3].Value;
         $operator = $parsed.Matches.Groups[4].Value;
         $value = [int]$parsed.Matches.Groups[5].Value;
         
-        if($CONSTANTS.ContainsKey($reference)){
-            $node.filter= @{
+        if ($parameters.ContainsKey($reference)) {
+            $node.filter = @{
                 reference = $reference;
-                value = $value;
-                operator = $operator;
-                label = $label
+                value     = $value;
+                operator  = $operator;
+                label     = $label
             }
         }
         else {
+            $warn = $parameters.Keys -join '|';
             Write-Warning ""
-            Write-Warning "Excepted $($constants_warn): found '$reference'"
+            Write-Warning "Excepted $($warn): found '$reference'"
             Write-Warning "  => the '$('#'*$node.level) $($node.title)' statement is ignored"
-            Write-Warning "  fixit: remove the statement or add '$reference' in the constants hashtable";
+            Write-Warning "  fixit: remove the statement or inject '$reference'";
             Write-Warning ""
         }
     }
 }
-
-function parseSummary($md) {
-    $document = @{children = @(); parent = $null; content = $null; title = "__ROOT__"; level = 0; filter= $null }
+function parseSummary($md, $parameters) {
+    $document = @{children = @(); parent = $null; content = $null; title = "__ROOT__"; level = 0; filter = $null }
     $parent = $document
     $current = $document    
     $p = "";
-    Get-Content $source | ForEach-Object {
-        $g = $_ | Select-String -Pattern '^(#+)\s*(.*)\s*$'
+    $md -split "`r`n" | ForEach-Object {
+        $g = $_ | Select-String -Pattern $HEADER_REGEX
         if ($g.Matches.Success) {
         
             $title = $g.Matches.Groups[2].Value;
@@ -71,27 +152,35 @@ function parseSummary($md) {
             $current.content = $p;
             $p = "";   
             $parent = getParent -child $current -level ($level);
-            $current = @{children = @(); parent = $parent; content = $null; title = $title; level = $level; filter= $null};
-            parseFilter -node $current
+            $current = @{children = @(); parent = $parent; content = $null; title = $title; level = $level; filter = $null };
+            parseFilter -node $current -parameters $parameters
             $parent.children += @($current);
         }
         else {
-            $p +="$_`n";
+            $p += "$_`n";
         }
     }
+    $current.content = $p;
     return $document;
 }
-
- function debugSummary($node, $padding) {
+function debugSummary($node, $padding) {
     Write-Output "$($padding) $($node.level) $($node.title)";
     $node.children | % { debugSummary -node $_ -padding "$($padding)-" }
 }
-
 function getOuterMd($node) {
+    Write-Output "$('#'*$node.level) $($node.title)";
+    Write-Output $node.content;
+    $node.children | % { Write-Output (getOuterMd -node $_) }
+}
+function getInnerMd($node) {
+    Write-Output $node.content;
+    $node.children | % { Write-Output (getOuterMd -node $_) }
+}
+function getGate($node, $parameters) {
     $accepted = $true;
     $new = $false;
     if($null -ne $node.filter){
-        $const = $CONSTANTS[$node.filter.reference];
+        $const = $parameters[$node.filter.reference];
         if ($node.filter.operator -eq ">=") {
             $accepted = $const -ge $node.filter.value;
             $new = $const -eq $node.filter.value;
@@ -100,178 +189,147 @@ function getOuterMd($node) {
         } elseif($node.filter.operator -eq "=="){
             $accepted = $const -eq $node.filter.value;
         }
-        Write-Host "evaluate $($node.filter.reference):$const $($node.filter.operator) $($node.filter.value)";
+        Write-Debug "evaluate $($node.filter.reference):$const $($node.filter.operator) $($node.filter.value)";
     }
-
-    if($accepted) {
-        if($new) {
-            Write-Output ""
-            Write-Output "<div class='statement-summary-new-league-rules'>"
-            Write-Output ""
-        }
-        if($null -eq $node.filter){
-             Write-Output "$('#'*$node.level) $($node.title)";
-        } elseif ($null -ne $node.filter.label) {
-            Write-Output "$('#'*$node.level) $($node.filter.label)";
-        }
-
-        Write-Output $node.content;
-        $node.children | % { Write-Output (getOuterMd -node $_) }
-        
-        if($new) {
-            Write-Output ""
-            Write-Output "</div>"
-            Write-Output ""
-        }
-    }
-}
-
-function getInnerMd($node) {
-    Write-Output $node.content;
-    $node.children | % { Write-Output (getOuterMd -node $_) }
-
+    return @{ open =$accepted; new=$new}
 }
 
 #################################################################################
 ############################# Templating   ######################################
 #################################################################################
 
-function templateVariables($md) {
-    return $md -creplace '`([a-z][^`]*)`','<var>$1</var>' 
-}
-
-function templateConstants($md) {
-    return $md -creplace '`([A-Z0-9][^`]*)`','<constant>$1</constant>'
+function pimpMd($content) {
+    $REPLACE_REGEX | % {
+        $content = $content -creplace $_.regex, $_.replace
+    }
+    $empty = $true;
+    $content -split "`r`n" | % {
+        if ($empty) {
+            foreach ($rule in $INSERT_REGEX) {
+                if ($_ -match $rule.regex) {
+                    write-output $rule.insert; 
+                }
+            }
+        }
+        write-output $_;
+        $empty = [String]::IsNullOrWhiteSpace($_);
+    }
 }
 
 function templateHtml($content, $style) {
-return "
+    return "
 <html>
 <head>
 <style>
 $style
 </style>
 </head>
-<body style='font-family:Open Sans,Lato,sans-serif!important'>
+<body style='font-family:Open Sans,Lato,sans-serif!important;margin:0'>
 $content
 </body>
 </html>"
 }
 
 function templateBody($content) {
-return "
+    return "
 <div id='statement_back' class='statement_back' style='display:none'></div>
 <div class='statement-body'>
 $content`n
 </div>"
 }
 
-$sections = @{
-    'The Goal'= @{ section='statement-goal'; body='statement-goal-content'; icon='icon-goal' } 
-    'Rules' = @{ section='statement-rules'; body='statement-rules-content'; icon='icon-rules' }
-    'Expert Rules' = @{ section='statement-expertrules'; body='statement-expert-rules-content'; icon='icon-expertrules' }
-    'Note' =  @{ section='statement-warning'; body='statement-warning-content'; icon='icon-warning' } 
-    'Example' =@{ section='statement-examples'; body='statement-examples-text'; icon='icon-example' } 
-}
-function templateStatement($options, $title, $content) {
-    $section = $options.section;
-    $body = $options.body;
-    $icon = $options.icon;
-    Write-Output "
-<div class='statement-section $section'>
-<h1>
-<span class='icon $icon'>&nbsp;</span>
-<span>$title</span>
-</h1>"
-    
-        if($null -eq $body){
-            Write-Output $content
-        } else {
-            Write-Output "
-<div class='$body'>
-$content
-</div>"
-        }
-    Write-Output "</div>";
+function templateHighlight($content) {
+    Write-Output ""
+    Write-Output "<div class='statement-summary-new-league-rules'>"
+    Write-Output ""
+    Write-Output "$content"
+    Write-Output ""
+    Write-Output "</div>"
+    Write-Output ""
 }
 
-function contentisIgnored ($node, $message){
-    if ($null -ne $node.content -and $node.content -match '\S'){
-        Write-Warning ""
-        Write-Warning "$($message)"
-        Write-Warning "  => the content of '$('#'*$node.level) $($node.title)' is removed.";
-        Write-Warning "  fixit: remove the content!"
-        Write-Warning ""
+function getLayout($node, $accepted) {
+    if ($null -ne $accepted) {
+        $title = $node.title;
+        foreach ($layout in $accepted) {
+            if ($title -match $layout.token) {
+                return $layout;
+            }
+        }
+    }
+    return @{ token = ''; name = 'default'; render = $DEFAULT_PLAIN; accepts=@() }
+}
+
+function drop ($content) {
+    return "<!--
+$content
+-->"
+}
+
+function renderPlainContent($content) {
+    $content = pimpMd -content $content | Out-String;
+    $content = ($content  | ConvertFrom-Markdown).Html;
+    Write-Output $content;
+}
+function renderContentRecursive($node) {
+    $content = getOuterMd -node $node;
+    renderPlainContent -content $content; 
+}
+
+function renderNode ($node, $accepted, $parameters) {    
+    Write-Verbose "render $('#'*$node.level) $($node.title)";
+    $gate = getGate -node $node -parameters $parameters
+    if($gate.open) {
+        $layout = getLayout -accepted $accepted -node $node;
+
+        $innerContent = renderPlainContent -content $node.content;
+        $innerContent += $node.children | % {
+            renderNode -accepted $layout.accepts -node $_ -parameters $parameters
+        }
+        $title = $node.title -replace $layout.token,'';
+        $title = $title -replace '\s*[A-Z]+\s*[>=]+\s*[0-9]+\s*$','*';
+        $content += $layout.render.invoke($node, $layout,$title, $innerContent);
+        if($gate.new) {
+            Write-Verbose "Node is new due to the parameters."
+            templateHighlight -content $content;
+        }
+        else {
+            Write-Output $content
+        }
+    }
+    else {
+        Write-Verbose "Node ignored due to the parameters."
     }
 }
 
-function childrenAreIgnored ($node, $message){
-        Write-Warning ""
-        Write-Warning "$($message)"
-        Write-Warning "  => the children of '$('#'*$node.level) $($node.title)' is removed.";
-        Write-Warning "  fixit: remove the children!"
-        Write-Warning ""
-}
+function renderDocument ($document, $parameters) {
+    
+    if ($document.children.Length -ne 1) {
+        Write-Error "Excepted one H1: found $($document.children.Length)";
+        exit 1;
+    }
 
-function nodeIsIgnored ($node, $message){
-        Write-Warning ""
-        Write-Warning "$($message)"
-        Write-Warning "  => the children of '$('#'*$node.level) $($node.title)' is removed.";
-        Write-Warning "  fixit: remove the children!"
-        Write-Warning ""
-}
-
-function sectionIsIgnored ($node){
-    Write-Warning ""
-    Write-Warning "Excepted ($sections_warn): found '$('#'*$node.level) $($node.title)'"
-    Write-Warning "  => the section '$('#'*$node.level) $($node.title)' is removed.";
-    Write-Warning "  fixit: remove the section or rename the title."
-    Write-Warning ""
-}
-
-function convertToCgHtml ($md){
-    $md = templateConstants -md $md;
-    $md = templateVariables -md $md;
-    $document = parseSummary -md $md;
-    contentIsIgnored -node $document -message "no content is excepted before the first section";
     $html = "";
-    foreach($node in $document.children){
-        if($sections.ContainsKey($node.title)) {
-            try {
-                $lines = getInnerMd -node $node | Out-String
-                $content = ($lines| ConvertFrom-Markdown).Html;
-                $html += templateStatement -options $sections[$node.title] -title $node.title -content $content;
-            } catch {
-                Write-Error "Markdown converter failed in these lines:"
-                Write-Error "---------------------------------"
-                Write-Error $lines
-                Write-Error "---------------------------------"
-            }  
-        }
-        else {
-            sectionIsIgnored -node $node;
-        }
+    $body = $document.children[0];
+    $html += drop $document.content;
+    $html += drop $body.title;
+    $html += drop $body.content;
+
+    Write-Verbose "render # $($body.title)";
+    foreach ($node in $body.children) {
+        $html += renderNode -accepted $LAYOUT -node $node -parameters $parameters;
     }
     $html = templateBody -content $html
     return $html
 }
-
-$md = Get-Content $source -Encoding utf8;
-$document = parseSummary -md $md
-Write-host "convert markdown to CG HTML $($source):"
-Write-host "------------------------------------";
-debugSummary -node $document -padding "-";
-Write-host "------------------------------------";
-$output= convertToCgHtml -md $md 
-$output | Out-File -Path "debug.html" -Encoding utf8
 
 #################################################################################
 ############################# Style #############################################
 #################################################################################
 
 function getStyle() {
-     
-Write-Output "
+
+    return "
 .statement-icon_statement_download {
     background-image: url('https://static.codingame.com/assets/spritesheets/statement.8f64ade5.png');
     background-position: 0 -25px;
@@ -807,6 +865,8 @@ action {
 .statement-body h1 .icon, .statement-body h2 .icon {
     margin-left: 2px;
 }
+
+
 
 .statement-body h1 .icon.icon-goal, .statement-body h2 .icon.icon-goal {
     background-image: url('https://static.codingame.com/assets/spritesheets/statement.8f64ade5.png');
@@ -1371,3 +1431,25 @@ a, a:active, a:hover, a:visited {
 }
 "
 }
+
+function main() {
+    
+    $raw = Get-Content $Source -Encoding utf8;
+
+    $md = pimpMd -content $raw | Out-String;
+    $md | Out-File -Path "debug.md" -Encoding utf8
+    
+    $tree = parseSummary -md $raw -parameters @{'LEAGUE' = 3 };
+    Write-Verbose "--------------------------"
+    Write-Verbose "       SUMMARY            "
+    Write-Verbose "--------------------------"
+    debugSummary -node $tree | Write-Verbose
+    Write-Verbose "--------------------------"
+
+    $html = renderDocument -document $tree -parameters @{'LEAGUE' = 3 };
+    $html | Out-File -Path "release.html" -Encoding utf8;
+    $htmlDebug = templateHtml -content $html -style (getStyle);
+    $htmlDebug | Out-File -Path "debug.html" -Encoding utf8;
+}
+
+main;

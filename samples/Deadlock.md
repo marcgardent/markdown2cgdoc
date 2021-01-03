@@ -1,18 +1,14 @@
-# 🔥deadlock
+# 🔥warm up
 
 ## 🎯 The Goal
 
-Get the lock 🔒 at the middle.
+Get a fish 🐟 in the whole And save the banquise.
 
 ## ✔️ Rules
 
-### Environment
-
-You evolve in a disk area. 
-
-This area reduce proportionally of the player's move.
-
-
+You evolves in a ring with seven others puigun.
+But all move of player consume the energy of the ring.
+Thefore ring's size decrease according to the energy consumption.
 
 ### 🏆 Victory Conditions
 

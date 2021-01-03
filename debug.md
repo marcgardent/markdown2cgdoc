@@ -88,27 +88,31 @@ parsed:
 content
 
 {style="font-size:14px;font-weight:700;padding-top:15px;color:#838891;padding-bottom:15px"}
+### 👀Input for init Game Turn
+
+#### 📑Line 1: description<var>variable</var>
+
+line 1 full desc.<var>variable</var>
+
+
+{style="font-size:14px;font-weight:700;padding-top:15px;color:#838891;padding-bottom:15px"}
 ### 👀Input for One Game Turn
 
-input_content
+#### 📑Line 1: description
 
-#### 📑Line 1: desc
-
-line_1_content
+line 1 full desc.<var>variable</var>
 
 {style="font-size:14px;font-weight:700;padding-top:15px;color:#838891;padding-bottom:15px"}
 ### 💬Output for One Game Turn
 
-output
+#### 📑Line 1 , no desc
 
-#### 📑Line 1: desc
-
-line_1_content<var>variable</var>
+line 1 full desc. <action>ACTION</action>
 
 {style="font-size:14px;font-weight:700;padding-top:15px;color:#838891;padding-bottom:15px"}
-### Constraints
+### ⚓Constraints
 
-
+Allotted response time to output is ≤ <const>50</const> milliseconds.
 
 ## Credits & Licenses
 

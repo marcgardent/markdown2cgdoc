@@ -83,25 +83,28 @@ parsed:
 
 content
 
+### 👀Input for init Game Turn
+
+#### 📑Line 1: description `variable`
+
+line 1 full desc. `variable`
+
+
 ### 👀Input for One Game Turn
 
-input_content
+#### 📑Line 1: description
 
-#### 📑Line 1: desc
-
-line_1_content
+line 1 full desc. `variable`
 
 ### 💬Output for One Game Turn
 
-output
+#### 📑Line 1 , no desc
 
-#### 📑Line 1: desc
+line 1 full desc. `ACTION`
 
-line_1_content `variable`
+### ⚓Constraints
 
-### Constraints
-
-
+Allotted response time to output is ≤ `50` milliseconds.
 
 ## Credits & Licenses
 

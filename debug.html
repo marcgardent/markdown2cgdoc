@@ -1123,7 +1123,7 @@ the text after H1 is not rendered!
 -->
 <!-- warning -->
 <div class='statement-section statement-warning'>
-<h2><span class='icon icon-warning'>&nbsp;</span><span> Multileagues Caution*</span></h2>
+<h2><span class='icon icon-warning'>&nbsp;</span><span> Multileagues Caution</span></h2>
 <div class='statement-warning-content'>
 <p>New rules are added in this league:</p>
 <ul>
@@ -1169,7 +1169,7 @@ the text after H1 is not rendered!
 </div>
     </div>
 </div> 
-<div class='todo-implement-render' style='color:red'>
+<div class='no-cg-handled'>
 <h3>Custom section</h3>
 
 <p>blabla bla</p>
@@ -1181,7 +1181,7 @@ the text after H1 is not rendered!
 </div> <div class='statement-summary-new-league-rules'>  
 <!-- expertrules -->
 <div class='statement-section statement-expertrules'>
-<h2><span class='icon icon-expertrules'>&nbsp;</span><span> Expert Rules*</span></h2>
+<h2><span class='icon icon-expertrules'>&nbsp;</span><span> Expert Rules</span></h2>
 <div class='statement-expertrules-content'>
 <p>content</p>
 
@@ -1283,44 +1283,45 @@ the text after H1 is not rendered!
 <h2><span class='icon icon-protocol'>&nbsp;</span><span> Game Protocol</span></h2>
 <div class='statement-protocol-content'>
 <p>content</p>
+<div class='blk'>
+<div class='title'>Input for init Game Turn</div>
+<div class='text'>
+<span class='statement-lineno'>Line 1</span> description `variable`
 
-<div class='todo-implement-render' style='color:red'>
-<h3>Input for One Game Turn</h3>
+<p>line 1 full desc.<var>variable</var></p>
 
-<p>input_content</p>
-
-<div class='todo-implement-render' style='color:red'>
-<h4>Line 1: desc</h4>
-
-<p>line_1_content</p>
 
 
 </div>
+</div>
+ <div class='blk'>
+<div class='title'>Input for One Game Turn</div>
+<div class='text'>
+<span class='statement-lineno'>Line 1</span> description
+
+<p>line 1 full desc.<var>variable</var></p>
+
 
 
 </div>
- 
-<div class='todo-implement-render' style='color:red'>
-<h3>Output for One Game Turn</h3>
+</div>
+ <div class='blk'>
+<div class='title'>Output for One Game Turn</div>
+<div class='text'>
+<span class='statement-lineno'>Line 1 , no desc</span>
 
-<p>output</p>
+<p>line 1 full desc. <action>ACTION</action></p>
 
-<div class='todo-implement-render' style='color:red'>
-<h4>Line 1: desc</h4>
-
-<p>line_1_content<var>variable</var></p>
 
 
 </div>
-
+</div>
+ <div class='blk'>
+<div class='title'>Constraints</div>
+<div class='text'>
+<p>Allotted response time to output is ≤ <const>50</const> milliseconds.</p>
 
 </div>
- 
-<div class='todo-implement-render' style='color:red'>
-<h3>Constraints</h3>
-
-
-
 </div>
 
 </div>

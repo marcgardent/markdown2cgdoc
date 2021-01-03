@@ -20,11 +20,13 @@ $INSERT_REGEX = @(
 
 $FILTER_REGEX = '^(([^:]+)\s+)?([A-Z]+)\s*(>=|<=|==)\s*(\d)s*$';
 $HEADER_REGEX = '^(#+)\s*(.*)\s*$'
+$LINE_SPAN_REGEX = '^([^\:]*)(\:(.*))?$'
+$MATCH_CONDITIONAL_STATEMENT_REGEX = '\s*[A-Z]+\s*[>=]+\s*[0-9]+\s*$'
 
 #################################################################################
 $DEFAULT_PLAIN = { param ($node, $layout, $title, $content)
     "
-<div class='todo-implement-render' style='color:red'>
+<div class='no-cg-handled'>
 <h$($node.level)>$title</h$($node.level)>
 
 $content
@@ -74,6 +76,27 @@ $content
 </div>"
 }
 
+$PROTOCOL_BLOCK = { param ($node, $layout, $title, $content)
+    "<div class='blk'>
+<div class='title'>$title</div>
+<div class='text'>
+$content
+</div>
+</div>
+"
+}
+
+$NO_LINE_SPAN = { param ($node, $layout, $title, $content)
+$parsed = $title | Select-String -Pattern $LINE_SPAN_REGEX;
+$span = $parsed.Matches.Groups[1];
+$desc = $parsed.Matches.Groups[3];
+"<span class='statement-lineno'>$span</span>$desc
+
+$content
+
+"
+}
+
 #################################################################################
 $LAYOUT = @(
     @{ token = '🎯'; name = 'goal'; label = 'The Goal'; render = $SECTION_CG_H2 },
@@ -81,11 +104,13 @@ $LAYOUT = @(
     @{ token = '⚠️'; name = 'warning'; label = 'Note'; render = $SECTION_CG_H2 },
     @{ token = '🧾'; name = 'protocol'; label = 'Game Protocol'; render = $SECTION_CG_H2
         accepts = @(
-            @{ token = '👀'; name = 'input'; label = 'Input'; render = $DEFAULT_PLAIN;
-             accepts = @( @{token = '📑'; label = 'Line'; render = $DEFAULT_PLAIN }) },
-            @{ token = '💬'; name = 'output'; label = 'Output'; render = $DEFAULT_PLAIN;
-             accepts = @( @{token = '📑'; label = 'Line' ; render = $DEFAULT_PLAIN }) }
-        )
+            @{ token = '👀'; name = 'input'; label = 'Input'; render = $PROTOCOL_BLOCK;
+                accepts = @( @{token = '📑'; label = 'Line'; render = $NO_LINE_SPAN }) 
+            },
+            @{ token = '💬'; name = 'output'; label = 'Output'; render = $PROTOCOL_BLOCK;
+                accepts = @( @{token = '📑'; label = 'Line' ; render = $NO_LINE_SPAN }) 
+            }
+            @{ token = '⚓'; name = 'contrainst'; label = 'Constraints'; render = $PROTOCOL_BLOCK; accepts = @() })
     },
     @{ token = '📝'; name = 'pseudocode'; label = 'Pseudocode'; render = $SECTION_CG_H2 },
     @{ token = '💡'; name = 'hint'; label = 'Hint'; render = $SECTION_CG_H2 },
@@ -95,8 +120,8 @@ $LAYOUT = @(
             @{ token = '☠️'; name = 'lose'; label = 'Defeat Conditions'; render = $CONDITION_BLOCK_CG_H3 }
         )
     }
-    @{ token = '🎯'; name = 'goal'; label = 'The Goal'; render = $SECTION_CG_H2 },
-    @{ token = ''; name = 'default'; label = 'Custom section'; render = $DEFAULT_H2 }
+    @{ token = '🎯'; name = 'goal'; label = 'The Goal'; render = $SECTION_CG_H2 }
+    @{ token = ''; name = 'default'; label = 'Custom'; render = $DEFAULT_H2 }
 )
 
 #################################################################################
@@ -290,7 +315,7 @@ function renderNode ($node, $accepted, $parameters) {
         }
 
         $title = $node.title -replace $layout.token, '';
-        $title = $title -replace '\s*[A-Z]+\s*[>=]+\s*[0-9]+\s*$', '*';
+        $title = $title -replace $MATCH_CONDITIONAL_STATEMENT_REGEX, '';
         $content += $layout.render.invoke($node, $layout, $title, $innerContent);
         if ($gate.new) {
             Write-Verbose "Node is new due to the parameters."

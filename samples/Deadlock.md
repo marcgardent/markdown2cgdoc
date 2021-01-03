@@ -1,27 +1,67 @@
-# 🔥warm up
+# 🔥Save 🐧Pingouins
 
 ## 🎯 The Goal
 
-Get a fish 🐟 in the whole And save the banquise.
+You evolves on a circular *🧊ice floe* with seven other *🐧pingouins*.
+And you have to bring a *🐟fish*  in the *🕳️hole* and save the *🧊ice floe*.
 
 ## ✔️ Rules
 
-You evolves in a ring with seven others puigun.
-But all move of player consume the energy of the ring.
-Thefore ring's size decrease according to the energy consumption.
+The movements of the *🐧pingouins* melt the *🧊ice floe*.
+Thefore the size of *🧊ice floe* decrease according to the *⚡energy consumption*.
 
 ### 🏆 Victory Conditions
 
-* Get and release the lock 🔒
+* Bring a *🐟fish*
+* Rest on the *🧊ice floe*
 
 ### ☠️ Defeat Conditions
 
-* Someone not get the lock 🔒 in due time: 50 turns
+* Not bring a *🐟fish* in due time: 50 turns.
+* Fall in the water.
 * No send an ACTION in due time: 10ms
-* send wrong ACTION
+* Send non-well formed output.
 
+### 🏅Ranking
+
+The *🐧pingouins*:
+* with a *🐟fish* are sorted by time elapsed to get a fish first score `8 points`, second `7 points`, third  `6 points`...
+* without a fish score `0 points`
+* falled in the water are sorted by time elapsed on the *🧊ice floe*: first `-8 points`, second `-7 points` 
+* disqualified: score `-10 points`
+
+Finnaly the score is multiply by number of *🐧pingouins* on the *🧊ice floe*. So the best score is `64 points` and worse `80 points`.
 
 ## 🐯 Expert Rules
+
+### *⚡energy consumption*
+
+The referee additionate the *⚡energy consumption* - Sum of player's velocity squared. And compute the new radius:
+
+```speudocode
+RADIUS_MAX = 10000;
+SURFACE_FACTOR = 0.1;
+
+iceFloe.energyConsumed += players.ForEach( player -> player.Velocity * player.Velocity).Sum();
+iceFloe.radius = RADIUS_MAX - iceFloe.energyConsumed * SURFACE_FACTOR;
+```
+
+### ⛸️Motion Engine
+
+player send a cartesian vector X,Y
+
+```speudocode
+VELOCITY_MAX_SQUARED = 50*50;
+
+... TODO
+```
+
+### Colision engine
+
+```speudocode
+```
+
+
 
 ## ⚠️ Note
 

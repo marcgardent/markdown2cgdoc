@@ -8,17 +8,30 @@ Thx in advance.
 
 # war of the eight 
 
+## Design
+
+Status: DRAFT, Brainstorm
+
+### Constraints
+
+The puzzle game should be for eight players with the 4X experiences and only two actions: move, trade. Additionally, the player should control only one character.
+
+### Spin-off
+
+I would like implement several Spin-off before the huge 4X puzzle!
+
+* Travelling salesman problem : https://en.wikipedia.org/wiki/Travelling_salesman_problem
+* ...
+
+## 🎯 The Goal
+
 Become the best trader among the height. travel the road and deal the resources with the cities. Your deals develop the city and increase your trust. With these actions, you can obtain a decisive victory. Otherwise accumulate the biggest amount of gold.
 
-> Your are welcome  to suggest a new game's title! 
+![draftmap.jpeg|690x475](https://raw.githubusercontent.com/marcgardent/markdown2cgdoc/master/samples/war-of-the-eight/images/draftmap.jpeg) 
 
-![eight.PNG|690x475](upload://csBNzBpTaMVGiuf4i9tdnkuvlLI.jpeg) 
+## ✔️ Rules
 
-## Goals & design constrainsts
-
-The puzzle game should be for eight players with the 4X experiences and few actions (move, trade). Additionally, the player should control only one character.
-
-## Victory Conditions
+### 🏆 Victory Conditions
 
 several ways are offered to win the game, but everybody score.
 
@@ -38,11 +51,9 @@ several ways are offered to win the game, but everybody score.
  
  Obviously for the timeout case, all players score the amount of his gold.
 
-## Loss Conditions
+### ☠️ Defeat Conditions
 
 * **issue conditions**: you do not respond in due time (M ms) or output an invalid command.
-
-## Rules
 
 ### Expand your influence
 The referee considers the best trust and development index for each city:
@@ -50,7 +61,9 @@ The referee considers the best trust and development index for each city:
 * **a player controls the city's council**: trade only for the player.
 * **a player controls the military staff**: move and trade only for the player.
 
-## output
+## 🧾 Game Protocol
+
+### 💬Output for One Game Turn
 
 Two statements are allowed
 * `MOVE` `city.id`
@@ -66,7 +79,8 @@ Two statements are allowed
 * Trade politic resources in order to build **city's council**.
 * Trade military resources in order to  build the **military staff**.
 
-## Inputs
+### 👀Input for One Game Turn
+
 ```
 FOREACH (city where you has visited)  {
    `a_quantity` `b_quantity` `c_quantity` `d_quantity` `e_quantity` `f_quantity` `g_quantity`

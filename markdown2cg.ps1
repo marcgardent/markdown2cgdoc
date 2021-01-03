@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][String]$Source, [String]$ReleaseDestination="", [String]$ReviewDestination="", $Leagues = 0)
+param([Parameter(Mandatory = $true)][String]$Source, [String]$ReleaseDestination = "", [String]$ReviewDestination = "", $Leagues = 0)
 #Requires -Modules Microsoft.PowerShell.Utility
 
 #################################################################################
@@ -357,16 +357,16 @@ function export ($tree, $league, $subfolder, $debug, $release) {
     Write-Host "Render document for the league '$leagueLabel' ...";
     $html = renderDocument -document $tree -parameters @{'LEAGUE' = $league };
     if ($release) {
-            
-        mkdir "$ReleaseDestination/$($subfolder)" -ErrorAction SilentlyContinue | Out-Null
-        $file = "$ReleaseDestination/$($subfolder)$default_name";
+        $folder = "$ReleaseDestination/$($subfolder)"
+        mkdir $folder -ErrorAction SilentlyContinue | Out-Null 
+        $file = "$($folder)$default_name";
         Write-Host " -> Write  $file...";
         $html | Out-File -Path $file -Encoding utf8;
     }
     if ($debug) {
-            
-        mkdir "$ReviewDestination/$($subfolder)" -ErrorAction SilentlyContinue | Out-Null
-        $file = "$ReviewDestination/$($subfolder)$default_name";
+        $folder = "$ReviewDestination/$($subfolder)"
+        mkdir $folder -ErrorAction SilentlyContinue | Out-Null
+        $file = "$($folder)$default_name";
         Write-Host " -> Write  $file...";
         $htmlDebug = templateHtml -content $html;
         $htmlDebug | Out-File -Path $file -Encoding utf8;
@@ -380,7 +380,7 @@ function main() {
         Write-Error "the source:$source doesn't exist: create the file or check the path";
         exit 1;
     }
-    elseif (-not $release -and  -not $debug) {
+    elseif (-not $release -and -not $debug) {
         Write-Warning "no actions required: define -ReleaseDestination AND/OR -ReviewDestination";
         exit 1;
     }
@@ -403,8 +403,8 @@ function main() {
     export -tree $tree -subfolder '' -league 256 -debug $debug -release $release;
 
     if ($Leagues -gt 0) {
-        1..($Leagues + 1) | % {
-            export -tree $tree -subfolder "league$_" -league $_ -debug $debug -release $release;
+        1..($Leagues) | % {
+            export -tree $tree -subfolder "league$_/" -league $_ -debug $debug -release $release;
         }
     }
 }

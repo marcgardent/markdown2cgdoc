@@ -21,13 +21,15 @@ The puzzle game should be for eight players with the 4X experiences and only two
 I would like implement several Spin-off before the huge 4X puzzle!
 
 * Travelling salesman problem : https://en.wikipedia.org/wiki/Travelling_salesman_problem
-* ...
-
+  * **Spin off Level 1** - Orienteering game: choose the best way to pass each beacon.
+  * **Spin off Level 2** - Trader game: choose the best way to deal and accumulate the biggest amount of gold
+  
+   
 ## 🎯 The Goal
 
 Become the best trader among the height. travel the road and deal the resources with the cities. Your deals develop the city and increase your trust. With these actions, you can obtain a decisive victory. Otherwise accumulate the biggest amount of gold.
 
-![draftmap.jpeg|690x475](https://raw.githubusercontent.com/marcgardent/markdown2cgdoc/master/samples/war-of-the-eight/images/draftmap.jpeg) 
+![draftmap.jpeg|690x475](https://github.com/marcgardent/markdown2cgdoc/raw/master/samples/war-of-the-eight/images/draftmap.jpeg) 
 
 ## ✔️ Rules
 
@@ -69,7 +71,7 @@ Two statements are allowed
 * `MOVE` `city.id`
 * `TRADE` `a_quantity` `b_quantity` `c_quantity` `d_quantity` `e_quantity` `f_quantity` `g_quantity`
 
-|developpement  | Tiers 1     | Tiers 2     | Tiers 3     | 
+|development  | Tiers 1     | Tiers 2     | Tiers 3     | 
 |---------------|-------------|-------------|-------------|
 |Population     | `a_quantity`| `d_quantity`| `g_quantity`|
 |Politic        | `b_quantity`| `e_quantity`| `h_quantity`|
@@ -91,7 +93,7 @@ FOREACH (city where you has visited)  {
 FOR EACH player { position:city_id }
 ```
 
-Mininal information for operational game:
+Information for an operational game:
 * Prices
 * trusts
 * development indexes 

@@ -1,6 +1,6 @@
 # markdown2cg
 
-Save your time and don't repeat yourself: write the puzzle game for codingame platform with the `Markdown` syntax.
+Save your time and don't repeat yourself: write the puzzle game for *Codingame* platform with the `Markdown` syntax.
 
 > The promise :) Writing a CG doc will never be a nightmare again!
 
@@ -31,17 +31,21 @@ the script `markdown2cg.ps1` is a standalone file! You can copy anywhere and con
 
 ```powershell
 # Release the doc:
-./markdown2cg.ps1 -source mymarkdown.md -dest ./cg_project/config/
+./markdown2cg.ps1 -Source mymarkdown.md -ReleaseDestination ./cg_project/config/
 
-#add reviewDest to generate browsable html file:
-./markdown2cg.ps1 -source mymarkdown.md -reviewDest ./cg_project/doc/
+#add ReviewDestination to generate browsable html file:
+./markdown2cg.ps1 -Source mymarkdown.md -ReviewDestination ./cg_project/doc/
 
 #Or both:
-./markdown2cg.ps1 -source mymarkdown.md -dest ./cg_project/config/ -reviewDest ./cg_project/doc/
+./markdown2cg.ps1 -Source mymarkdown.md -ReleaseDestination ./cg_project/config/ -ReviewDestination ./cg_project/doc/
+
+#Or both:
+./markdown2cg.ps1 -Source mymarkdown.md -ReleaseDestination ./cg_project/config/ -ReviewDestination ./cg_project/doc/ -
+
 
 #Enable logs
 $VerbosePreference='Continue'
-./markdown2cg.ps1 -source mymarkdown.md -dest ./cg_project/config/ -reviewDest ./cg_project/doc/
+./markdown2cg.ps1 -Source mymarkdown.md -ReleaseDestination ./cg_project/config/ -ReviewDestination ./cg_project/doc/
 
 ```
 

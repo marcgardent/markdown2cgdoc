@@ -6,7 +6,7 @@ Save your time and don't repeat yourself: write the puzzle game for codingame pl
 
 ## Features
 
-* Use the emojies to tags the specific CG sections 🎯✔️🐯⚠️🧾📝💡.
+* Use the emojies to tags the specific CG sections.
 * You can append a conditional statement to handle the leagues. 
 * New blocks are marked as new according to conditional statements.
 * Wrapped words with *`backticks* are rendered as **variables** or **constant** or **actions** according to  the state of first letter: lowercase, digit, uppercase.
@@ -14,7 +14,7 @@ Save your time and don't repeat yourself: write the puzzle game for codingame pl
 * Output the complete `HTML` page with the `CSS` for reviewing.
 * Output the `HTML` for publishing the puzzle game!
 
-> The markdown stays *human-readable* for share on the forum and maintainers!
+> The markdown stays *human-readable* for sharing on the forum and maintainers!
 
 ## Usage
 
@@ -58,49 +58,97 @@ wrap your **variables** and **constants** and **actions**  with *`backticks*. Th
 * **constant** (digit): `000`, `-1`, `+10 units`, `5` 
 * **variable** (lowercase): `variable`
 
-### Chapters H2
+### Layout
 
-`h2` are wrapped with the specific CG HTML. And You can use an emoji to add the section's icon
-  * 🎯 The Goal
-  * ✔️ Rules
-  * 🐯 Expert Rules
-  * ⚠️ Note
-  * 🧾 Game Protocol
-  * 📝 Pseudocode
-  * 💡 Hint
-* `h3`: inline css-style is injected
-* `h4+`: no handle
+Use these the Emojies and the hierarchy to render correctly the document:
 
-### 🧾 Game Protocol Layout
+```markdown 
 
-In the *Game Protocol* chapter you have to respect very specific layout:
+<markdown not exported>
+
+# <Game title, header no-exported>
+
+<markdown not-exported>
+
+## 🎯 <The Goal title>
+
+<markdown>
+
+## ✔️ <Rules title>
+
+<markdown>
+
+### 🏆 <Victory Conditions title>
+
+<markdown>
+
+### ☠️ <Defeat Conditions title>
+
+<markdown>
+
+### <Custom section title>
+
+<markdown>
+
+## 🐯 <Expert Rules title>
+
+<markdown>
+
+## ⚠️ <Note title>
+
+<markdown>
+
+## 📝 <Pseudocode title>
+
+<markdown>
+
+## 💡 <Hint title>
+
+<markdown>
+
+## <Custom Section>
+
+<markdown>
+
+## 🧾 <Game Protocol title>
+
+<markdown>
+
+### 👀<title Input>
+
+<markdown>
+
+#### 📑<line label>: <short description>
+
+<markdown>
+
+### 👀<title Input>
+
+<markdown>
+
+#### 📑<line label>: <short description>
+
+<markdown>
+
+#### 📑<line label>: <short description>
+
+<markdown>
+
+### 💬 <title Output>
+
+<markdown>
+
+#### 📑<line label>: <short description>
+
+<markdown>
+
+### ⚓<Constraints title>
+
+<markdown>
 
 ```
-## Game Protocol
 
-here text accepted
-
-### Input
-
-here text accepted
-
-#### Line X
-
-line X content
-
-### Output
-
-here text accepted
-
-#### Line X
-
-line X content
-
-### Constraints
-
-Constraints_Content
-
-```
+> You can change the order and remove as you want!
 
 ### Conditional statement
 
@@ -113,3 +161,6 @@ DIY! You can append a conditional statement to handle the leagues:
   * league 4,5,...
 
 The header is removed but if you want keep it add a label like this: `### my label: LEAGUE >= 3`
+
+Get Started with [layout.md](./sample/layout.md)!
+

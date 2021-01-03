@@ -112,7 +112,31 @@ the text after H1 is not rendered!
 <blockquote>
 <p>Markdown samples</p>
 </blockquote>
-<table>
+<table class="marked">
+<thead>
+<tr>
+<th>Col0</th>
+<th>Col1</th>
+<th>Col2</th>
+<th>Col3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>row0</td>
+<td><var>var1</var></td>
+<td><var>var2</var></td>
+<td><var>var3</var></td>
+</tr>
+<tr>
+<td>row1</td>
+<td><var>var4</var></td>
+<td><var>var5</var></td>
+<td>hello</td>
+</tr>
+</tbody>
+</table>
+<table class="marked">
 <thead>
 <tr>
 <th>Col0</th>
@@ -153,12 +177,12 @@ the text after H1 is not rendered!
 <p>content</p>
 
 <div class='todo-implement-render' style='color:red'>
-<h3>🗺️Input</h3>
+<h3>Input for One Game Turn</h3>
 
 <p>input_content</p>
 
 <div class='todo-implement-render' style='color:red'>
-<h4>📑Line 1</h4>
+<h4>Line 1: desc</h4>
 
 <p>line_1_content</p>
 
@@ -169,12 +193,12 @@ the text after H1 is not rendered!
 </div>
  
 <div class='todo-implement-render' style='color:red'>
-<h3>🎬Output</h3>
+<h3>Output for One Game Turn</h3>
 
 <p>output</p>
 
 <div class='todo-implement-render' style='color:red'>
-<h4>📑Line 1</h4>
+<h4>Line 1: desc</h4>
 
 <p>line_1_content<var>variable</var></p>
 
@@ -187,7 +211,6 @@ the text after H1 is not rendered!
 <div class='todo-implement-render' style='color:red'>
 <h3>Constraints</h3>
 
-<p>blabla</p>
 
 
 </div>
@@ -196,13 +219,17 @@ the text after H1 is not rendered!
 </div>
 <!-- default -->
 <div class='statement-section statement-default'>
-<h2 style='padding-top:15px'><span>Credits</span>
+<h2 style='padding-top:15px'><span>Credits & Licenses</span>
 </h2>
 <div class='statement-default-content'>
 
-<p>Thanks the reviewers, to the players for contributing.</p>
-<p style="text-align:right">
-<a href="https://github.com/marcgardent/markdown2cgdoc" style="color:gray;">this document is generated from the markdown by markdown2cgdoc</a></p>
+<blockquote>
+<p>Thanks the reviewers and the players for contributing.</p>
+</blockquote>
+<ul>
+<li>this document is generated from the markdown by <a href="https://github.com/marcgardent/markdown2cgdoc">markdown2cgdoc</a></li>
+<li>This puzzle game is published under the following license: <a href="https://creativecommons.org/licenses/by-sa/2.0/">License CC BY-SA 2.0</a></li>
+</ul>
 
 
 </div>

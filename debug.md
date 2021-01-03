@@ -70,6 +70,12 @@ content
 |row0   |<var>var1</var>    |<var>var2</var>    |<var>var3</var>    |
 |row1   |<var>var4</var>    |<var>var5</var>    | hello     |
 
+{.marked}
+| Col0  | Col1      | Col2      | Col3      |
+|-------|-----------|-----------|-----------|
+|row0   |<var>var1</var>    |<var>var2</var>    |<var>var3</var>    |
+|row1   |<var>var4</var>    |<var>var5</var>    | hello     |
+
 
 parsed:
 
@@ -82,32 +88,32 @@ parsed:
 content
 
 {style="font-size:14px;font-weight:700;padding-top:15px;color:#838891;padding-bottom:15px"}
-### 🗺️Input
+### 👀Input for One Game Turn
 
 input_content
 
-#### 📑Line 1
+#### 📑Line 1: desc
 
 line_1_content
 
 {style="font-size:14px;font-weight:700;padding-top:15px;color:#838891;padding-bottom:15px"}
-### 🎬Output
+### 💬Output for One Game Turn
 
 output
 
-#### 📑Line 1
+#### 📑Line 1: desc
 
 line_1_content<var>variable</var>
 
 {style="font-size:14px;font-weight:700;padding-top:15px;color:#838891;padding-bottom:15px"}
 ### Constraints
 
-blabla
 
-## Credits
 
-Thanks the reviewers, to the players for contributing.
+## Credits & Licenses
 
-{style='text-align:right'}
-[this document is generated from the markdown by markdown2cgdoc](https://github.com/marcgardent/markdown2cgdoc){style='color:gray;'}
+> Thanks the reviewers and the players for contributing.
+
+* this document is generated from the markdown by [markdown2cgdoc](https://github.com/marcgardent/markdown2cgdoc)
+* This puzzle game is published under the following license: [License CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/)
 

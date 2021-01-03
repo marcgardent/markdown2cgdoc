@@ -66,6 +66,12 @@ content
 |row0   | `var1`    | `var2`    | `var3`    |
 |row1   | `var4`    | `var5`    | hello     |
 
+{.marked}
+| Col0  | Col1      | Col2      | Col3      |
+|-------|-----------|-----------|-----------|
+|row0   | `var1`    | `var2`    | `var3`    |
+|row1   | `var4`    | `var5`    | hello     |
+
 
 parsed:
 
@@ -77,29 +83,29 @@ parsed:
 
 content
 
-### 🗺️Input
+### 👀Input for One Game Turn
 
 input_content
 
-#### 📑Line 1
+#### 📑Line 1: desc
 
 line_1_content
 
-### 🎬Output
+### 💬Output for One Game Turn
 
 output
 
-#### 📑Line 1
+#### 📑Line 1: desc
 
 line_1_content `variable`
 
 ### Constraints
 
-blabla
 
-## Credits
 
-Thanks the reviewers, to the players for contributing.
+## Credits & Licenses
 
-{style='text-align:right'}
-[this document is generated from the markdown by markdown2cgdoc](https://github.com/marcgardent/markdown2cgdoc){style='color:gray;'}
+> Thanks the reviewers and the players for contributing.
+
+* this document is generated from the markdown by [markdown2cgdoc](https://github.com/marcgardent/markdown2cgdoc)
+* This puzzle game is published under the following license: [License CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/)

@@ -8,14 +8,14 @@ param([String]$Source, [String]$Destination, [String]$reviewDest, $MultiLeagues 
 $REPLACE_REGEX = @(
     @{ regex = '[^`]`\s*([a-z][^`]*)\s*`'; replace = '<var>$1</var>' },
     @{ regex = '`\s*([A-Z][^`]*)\s*`'; replace = '<action>$1</action>' },
-    @{ regex = '`\s*((-|\+\s*)?[0-9][^`]*)\s*`'; replace = '<const>$1</const>' }
+    @{ regex = '`\s*((-|\+\s*)?[0-9∞][^`]*)\s*`'; replace = '<const>$1</const>' }
 )
 
 $HEADER3_CSS = 'font-size:14px;font-weight:700;padding-top:15px;color:#838891;padding-bottom:15px';
 
 $INSERT_REGEX = @(
-    @{ regex = '^\|.+\|$'; insert = '{.marked}' }
-    @{ regex = '^###\s'; insert = "{style=`"$HEADER3_CSS`"}" }
+    @{ regex = '^\|.+\|$'; insert = '{.marked}'; label = 'table' }
+    @{ regex = '^###\s'; insert = "{style=`"$HEADER3_CSS`"}"; label = 'h3' }
 )
 
 $FILTER_REGEX = '^(([^:]+)\s+)?([A-Z]+)\s*(>=|<=|==)\s*(\d)s*$';
@@ -23,7 +23,7 @@ $HEADER_REGEX = '^(#+)\s*(.*)\s*$'
 
 #################################################################################
 $DEFAULT_PLAIN = { param ($node, $layout, $title, $content)
-"
+    "
 <div class='todo-implement-render' style='color:red'>
 <h$($node.level)>$title</h$($node.level)>
 
@@ -81,8 +81,10 @@ $LAYOUT = @(
     @{ token = '⚠️'; name = 'warning'; label = 'Note'; render = $SECTION_CG_H2 },
     @{ token = '🧾'; name = 'protocol'; label = 'Game Protocol'; render = $SECTION_CG_H2
         accepts = @(
-            @{ token = '👀'; name = 'input'; label = 'Input'; accepts = @( @{token = '📑'; label = 'Line'; render = $DEFAULT_PLAIN }) },
-            @{ token = '💬'; name = 'output'; label = 'Output'; accepts = @( @{token = '📑'; label = 'Line' ; render = $DEFAULT_PLAIN }) }
+            @{ token = '👀'; name = 'input'; label = 'Input'; render = $DEFAULT_PLAIN;
+             accepts = @( @{token = '📑'; label = 'Line'; render = $DEFAULT_PLAIN }) },
+            @{ token = '💬'; name = 'output'; label = 'Output'; render = $DEFAULT_PLAIN;
+             accepts = @( @{token = '📑'; label = 'Line' ; render = $DEFAULT_PLAIN }) }
         )
     },
     @{ token = '📝'; name = 'pseudocode'; label = 'Pseudocode'; render = $SECTION_CG_H2 },
@@ -179,19 +181,21 @@ function getInnerMd($node) {
 function getGate($node, $parameters) {
     $accepted = $true;
     $new = $false;
-    if($null -ne $node.filter){
+    if ($null -ne $node.filter) {
         $const = $parameters[$node.filter.reference];
         if ($node.filter.operator -eq ">=") {
             $accepted = $const -ge $node.filter.value;
             $new = $const -eq $node.filter.value;
-        } elseif($node.filter.operator -eq "<="){
+        }
+        elseif ($node.filter.operator -eq "<=") {
             $accepted = $const -le $node.filter.value;
-        } elseif($node.filter.operator -eq "=="){
+        }
+        elseif ($node.filter.operator -eq "==") {
             $accepted = $const -eq $node.filter.value;
         }
         Write-Debug "evaluate $($node.filter.reference):$const $($node.filter.operator) $($node.filter.value)";
     }
-    return @{ open =$accepted; new=$new}
+    return @{ open = $accepted; new = $new }
 }
 
 #################################################################################
@@ -202,11 +206,12 @@ function pimpMd($content) {
     $REPLACE_REGEX | % {
         $content = $content -creplace $_.regex, $_.replace
     }
-    $empty = $true;
-    $content -split "`r`n" | % {
+    $empty = $true; 
+    $content -split "`n" | % { 
         if ($empty) {
             foreach ($rule in $INSERT_REGEX) {
                 if ($_ -match $rule.regex) {
+                    Write-Debug "the insert rule '$($rule.label)' matched the line '$_'";
                     write-output $rule.insert; 
                 }
             }
@@ -257,7 +262,7 @@ function getLayout($node, $accepted) {
             }
         }
     }
-    return @{ token = ''; name = 'default'; render = $DEFAULT_PLAIN; accepts=@() }
+    return @{ token = ''; name = 'default'; render = $DEFAULT_PLAIN; accepts = @() }
 }
 
 function drop ($content) {
@@ -271,25 +276,23 @@ function renderPlainContent($content) {
     $content = ($content  | ConvertFrom-Markdown).Html;
     Write-Output $content;
 }
-function renderContentRecursive($node) {
-    $content = getOuterMd -node $node;
-    renderPlainContent -content $content; 
-}
-
 function renderNode ($node, $accepted, $parameters) {    
     Write-Verbose "render $('#'*$node.level) $($node.title)";
     $gate = getGate -node $node -parameters $parameters
-    if($gate.open) {
+    if ($gate.open) {
         $layout = getLayout -accepted $accepted -node $node;
 
         $innerContent = renderPlainContent -content $node.content;
-        $innerContent += $node.children | % {
-            renderNode -accepted $layout.accepts -node $_ -parameters $parameters
+        if ($null -ne $node.children) {
+            $innerContent += $node.children | % {
+                renderNode -accepted $layout.accepts -node $_ -parameters $parameters
+            }
         }
-        $title = $node.title -replace $layout.token,'';
-        $title = $title -replace '\s*[A-Z]+\s*[>=]+\s*[0-9]+\s*$','*';
-        $content += $layout.render.invoke($node, $layout,$title, $innerContent);
-        if($gate.new) {
+
+        $title = $node.title -replace $layout.token, '';
+        $title = $title -replace '\s*[A-Z]+\s*[>=]+\s*[0-9]+\s*$', '*';
+        $content += $layout.render.invoke($node, $layout, $title, $innerContent);
+        if ($gate.new) {
             Write-Verbose "Node is new due to the parameters."
             templateHighlight -content $content;
         }

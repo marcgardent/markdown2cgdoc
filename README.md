@@ -6,10 +6,10 @@ Save your time and don't repeat yourself: write the puzzle game for *Codingame* 
 
 ## Features
 
-* Use the emojies to tags the specific CG sections.
+* Use the emojis to tags the specific CG sections.
 * You can append a conditional statement to handle the leagues. 
 * New blocks are marked as new according to conditional statements.
-* Wrapped words with *`backticks* are rendered as **variables** or **constant** or **actions** according to  the state of first letter: lowercase, digit, uppercase.
+* Wrapped words with *`backticks* are rendered as **variables** or **constant** or **actions** according to the state of the first letter: lowercase, digit, uppercase.
 
 * Output the complete `HTML` page with the `CSS` for reviewing.
 * Output the `HTML` for publishing the puzzle game!
@@ -51,7 +51,7 @@ $VerbosePreference='Continue'
 
 ### Gradle
 
-TODO: implement a task to generate the doc directly with a gradle task
+TODO: implement a task to generate the doc directly with a Gradle task
 
 ## Syntax
 
@@ -154,9 +154,9 @@ Use these the Emojies and the hierarchy to render correctly the document:
 
 > You can change the order and remove as you want!
 
-### Conditional statement
+### Conditional block
 
-DIY! You can append a conditional statement to handle the leagues:
+DRY! You can append a conditional statement to handle the leagues at any header:
 
 * `### LEAGUE == 1`: league 1 only
 * `### LEAGUE <= 2`: league 1,2
@@ -164,7 +164,6 @@ DIY! You can append a conditional statement to handle the leagues:
   * league 3 as new:green highlight
   * league 4,5,...
 
-The header is removed but if you want keep it add a label like this: `### my label: LEAGUE >= 3`
+The header is removed. but if you want to keep it add a label like this: `## my label: LEAGUE >= 3`
 
 Get Started with [layout.md](./sample/layout.md)!
-

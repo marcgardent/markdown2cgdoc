@@ -361,7 +361,7 @@ function renderDocument ($document, $parameters) {
 }
 
 function export ($tree, $league, $subfolder, $debug, $release) {
-    $default_name = 'statement_$Language.html'
+    $default_name = "statement_$Language.html"
     $leagueLabel = if ($league -ge 256) { "default" } else { $league };
     Write-Host "Render document for the league '$leagueLabel' ...";
     $html = renderDocument -document $tree -parameters @{'LEAGUE' = $league };

@@ -1,14 +1,16 @@
-param([Parameter(Mandatory = $true)][String]$Source, [String]$ReleaseDestination = "", [String]$ReviewDestination = "", $Leagues = 0)
+param([Parameter(Mandatory = $true)][String]$Source, [String]$ReleaseDestination = "", [String]$ReviewDestination = "", $Leagues = 0, $Language = 'en')
 #Requires -Modules Microsoft.PowerShell.Utility
 
 #################################################################################
 # CONFIGURATION                                                                 #
 #################################################################################
 
+$NEW_TOKEN ="🟢"
+
 $REPLACE_REGEX = @(
-    @{ regex = '[^`]`\s*([a-z][^`]*)\s*`'; replace = '<var>$1</var>' },
-    @{ regex = '`\s*([A-Z][^`]*)\s*`'; replace = '<action>$1</action>' },
-    @{ regex = '`\s*((-|\+\s*)?[0-9∞][^`]*)\s*`'; replace = '<const>$1</const>' }
+    @{ regex = '([^`])`([a-z]{1}[^`\s]*)`'; replace = '$1<var>$2</var>' },
+    @{ regex = '([^`])`([A-Z]{1}[^`\s]*)`'; replace = '$1<action>$2</action>' },
+    @{ regex = '([^`])`((-|\+)?[0-9∞]{1}[^`\s]*)\s*`'; replace = '$1<const>$2</const>' }
 )
 
 $HEADER3_CSS = 'font-size:14px;font-weight:700;padding-top:15px;color:#838891;padding-bottom:15px';
@@ -313,12 +315,19 @@ function renderNode ($node, $accepted, $parameters) {
                 renderNode -accepted $layout.accepts -node $_ -parameters $parameters
             }
         }
-
-        $title = $node.title -replace $layout.token, '';
+        $explicitNew = $node.title -match $NEW_TOKEN;
+        $title = $node.title -replace $NEW_TOKEN, '';
+        $title = $title -replace $layout.token, '';
         $title = $title -replace $MATCH_CONDITIONAL_STATEMENT_REGEX, '';
+        
+
         $content += $layout.render.invoke($node, $layout, $title, $innerContent);
         if ($gate.new) {
             Write-Verbose "Node is new due to the parameters."
+            templateHighlight -content $content;
+        }
+        elseif ($explicitNew){
+            Write-Verbose "Node is new due to the explicit token '$NEW_TOKEN'."
             templateHighlight -content $content;
         }
         else {
@@ -352,7 +361,7 @@ function renderDocument ($document, $parameters) {
 }
 
 function export ($tree, $league, $subfolder, $debug, $release) {
-    $default_name = 'statement_en.html'
+    $default_name = 'statement_$Language.html'
     $leagueLabel = if ($league -ge 256) { "default" } else { $league };
     Write-Host "Render document for the league '$leagueLabel' ...";
     $html = renderDocument -document $tree -parameters @{'LEAGUE' = $league };

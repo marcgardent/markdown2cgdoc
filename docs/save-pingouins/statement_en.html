@@ -10,34 +10,19 @@
 <div id='statement_back' class='statement_back' style='display:none'></div>
 <div class='statement-body'>
 <!--
-the text before H1 is not rendered!
-
 
 --><!--
-Game
+🔥Save 🐧Pingouins
 --><!--
 
-the text after H1 is not rendered!
 
-
---> <div class='statement-summary-new-league-rules'>  
-<!-- warning -->
-<div class='statement-section statement-warning'>
-<h2><span class='icon icon-warning'>&nbsp;</span><span> Multi-leagues Caution</span></h2>
-<div class='statement-warning-content'>
-<p>New rules are added in this league:</p>
-<ul>
-<li>read the green highlight sections in next leagues.</li>
-<li>...</li>
-</ul>
-
-</div>
-</div>  </div> 
+-->
 <!-- goal -->
 <div class='statement-section statement-goal'>
 <h2><span class='icon icon-goal'>&nbsp;</span><span> The Goal</span></h2>
 <div class='statement-goal-content'>
-<p>This is amazing game: become greater!</p>
+<p>You evolves on a circular <em>🧊ice floe</em> with seven other <em>🐧pingouins</em>.
+And you have to bring a <em>🐟fish</em>  in the <em>🕳️hole</em> and save the <em>🧊ice floe</em>.</p>
 
 </div>
 </div>
@@ -45,13 +30,15 @@ the text after H1 is not rendered!
 <div class='statement-section statement-rules'>
 <h2><span class='icon icon-rules'>&nbsp;</span><span> Rules</span></h2>
 <div class='statement-rules-content'>
-<p>blabla bla</p>
+<p>The movements of the <em>🐧pingouins</em> melt the <em>🧊ice floe</em>.
+Thefore the size of <em>🧊ice floe</em> decrease according to the <em>⚡energy consumption</em>.</p>
 <div class='statement-victory-conditions'>
     <div class='icon victory'></div><div class='blk'>
         <div class='title'> Victory Conditions</div>
         <div class='text'>
 <ul>
-<li>...</li>
+<li>Get a <em>🐟fish</em></li>
+<li>Stay on the <em>🧊ice floe</em></li>
 </ul>
             
 </div>
@@ -61,18 +48,68 @@ the text after H1 is not rendered!
         <div class='title'> Defeat Conditions</div>
         <div class='text'>
 <ul>
-<li>...</li>
-<li>send wrong statement</li>
-<li>timeout</li>
+<li>Not get a <em>🐟fish</em> in due time: <code>50 turns</code>.</li>
+<li>Fall in the water.</li>
+<li>No send an ACTION in due time: <code>10 ms</code>.</li>
+<li>Send non-well formed output.</li>
 </ul>
             
 </div>
     </div>
 </div> 
 <div class='no-cg-handled'>
-<h3>Custom section</h3>
+<h3>🏅 Ranking</h3>
 
-<p>blabla bla</p>
+<p>The <em>🐧pingouins</em>:</p>
+<ul>
+<li>with a <em>🐟fish</em> are sorted by time elapsed to get a fish: first score <code>8 points</code>, second <code>7 points</code>, third  <code>6 points</code>...</li>
+<li>without a fish score <code>0 points</code></li>
+<li>falled in the water are sorted by time elapsed on the <em>🧊ice floe</em>: first <code>-8 points</code>, second <code>-7 points</code></li>
+<li>disqualified: score <code>-10 points</code></li>
+</ul>
+<p>Finnaly the score is multiply by number of <em>🐧pingouins</em> on the <em>🧊ice floe</em>. So the best score is <code>64 points</code> and worse <code>80 points</code>.</p>
+
+
+</div>
+
+</div>
+</div>
+<!-- expertrules -->
+<div class='statement-section statement-expertrules'>
+<h2><span class='icon icon-expertrules'>&nbsp;</span><span> Expert Rules</span></h2>
+<div class='statement-expertrules-content'>
+
+<div class='no-cg-handled'>
+<h3>*⚡energy consumption*</h3>
+
+<p>The referee additionate the <em>⚡energy consumption</em> - Sum of player's velocity squared. And compute the new radius:</p>
+<pre><code class="language-speudocode">SURFACE_MAX = 10000;
+SURFACE_FACTOR = 0.1;
+PI = 3.14;
+
+iceFloe.energyConsumed += players.ForEach( player -&gt; player.Velocity * player.Velocity).Sum();
+iceFloe.radius = sqrt( (SURFACE_MAX - iceFloe.energyConsumed * SURFACE_FACTOR)/ PI);
+</code></pre>
+
+
+</div>
+ 
+<div class='no-cg-handled'>
+<h3>⛸️ Motion Engine</h3>
+
+<p>player send a cartesian vector X,Y</p>
+<pre><code class="language-speudocode">VELOCITY_MAX_SQUARED = 50*50;
+
+... TODO
+</code></pre>
+
+
+</div>
+ 
+<div class='no-cg-handled'>
+<h3>Colision engine</h3>
+
+<pre><code class="language-speudocode"></code></pre>
 
 
 </div>
@@ -83,15 +120,6 @@ the text after H1 is not rendered!
 <div class='statement-section statement-warning'>
 <h2><span class='icon icon-warning'>&nbsp;</span><span> Note</span></h2>
 <div class='statement-warning-content'>
-<p>content</p>
-
-</div>
-</div>
-<!-- pseudocode -->
-<div class='statement-section statement-pseudocode'>
-<h2><span class='icon icon-pseudocode'>&nbsp;</span><span> Pseudocode</span></h2>
-<div class='statement-pseudocode-content'>
-<p>content</p>
 
 </div>
 </div>
@@ -99,74 +127,7 @@ the text after H1 is not rendered!
 <div class='statement-section statement-hint'>
 <h2><span class='icon icon-hint'>&nbsp;</span><span> Hint</span></h2>
 <div class='statement-hint-content'>
-<p>content</p>
-
-</div>
-</div>
-<!-- default -->
-<div class='statement-section statement-default'>
-<h2 style='padding-top:15px'><span>lambda Section</span>
-</h2>
-<div class='statement-default-content'>
-
-<blockquote>
-<p>Markdown samples</p>
-</blockquote>
-<table class="marked">
-<thead>
-<tr>
-<th>Col0</th>
-<th>Col1</th>
-<th>Col2</th>
-<th>Col3</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>row0</td>
-<td><var>var1</var></td>
-<td><var>var2</var></td>
-<td><var>var3</var></td>
-</tr>
-<tr>
-<td>row1</td>
-<td><var>var4</var></td>
-<td><var>var5</var></td>
-<td>hello</td>
-</tr>
-</tbody>
-</table>
-<table class="marked">
-<thead>
-<tr>
-<th>Col0</th>
-<th>Col1</th>
-<th>Col2</th>
-<th>Col3</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>row0</td>
-<td><var>var1</var></td>
-<td><var>var2</var></td>
-<td><var>var3</var></td>
-</tr>
-<tr>
-<td>row1</td>
-<td><var>var4</var></td>
-<td><var>var5</var></td>
-<td>hello</td>
-</tr>
-</tbody>
-</table>
-<p>parsed:</p>
-<ul>
-<li>action: <action>ACTION</action></li>
-<li>constant: <const>000</const> <const>-1</const> <code>+10 units</code> <const>5</const></li>
-<li>variable: <var>variable</var></li>
-</ul>
-
+<p>The game is a trade off of your individual goal and collective goal.</p>
 
 </div>
 </div>
@@ -174,11 +135,10 @@ the text after H1 is not rendered!
 <div class='statement-section statement-protocol'>
 <h2><span class='icon icon-protocol'>&nbsp;</span><span> Game Protocol</span></h2>
 <div class='statement-protocol-content'>
-<p>content</p>
 <div class='blk'>
-<div class='title'>Input for init Game Turn</div>
+<div class='title'> Input for One Game Turn</div>
 <div class='text'>
-<span class='statement-lineno'>Line 1</span> description `variable`
+<span class='statement-lineno'> Line 1</span> description
 
 <p>line 1 full desc. <var>variable</var></p>
 
@@ -187,20 +147,9 @@ the text after H1 is not rendered!
 </div>
 </div>
  <div class='blk'>
-<div class='title'>Input for One Game Turn</div>
+<div class='title'> Output for One Game Turn</div>
 <div class='text'>
-<span class='statement-lineno'>Line 1</span> description
-
-<p>line 1 full desc. <var>variable</var></p>
-
-
-
-</div>
-</div>
- <div class='blk'>
-<div class='title'>Output for One Game Turn</div>
-<div class='text'>
-<span class='statement-lineno'>Line 1 , no desc</span>
+<span class='statement-lineno'> Line 1 , no desc</span>
 
 <p>line 1 full desc. <action>ACTION</action></p>
 
@@ -209,9 +158,9 @@ the text after H1 is not rendered!
 </div>
 </div>
  <div class='blk'>
-<div class='title'>Constraints</div>
+<div class='title'> Constraints</div>
 <div class='text'>
-<p>Allotted response time to output is ≤ <const>50</const> milliseconds.</p>
+<p>Allotted response time to output is ≤ <const>10</const> milliseconds.</p>
 
 </div>
 </div>

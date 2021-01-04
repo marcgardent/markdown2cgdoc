@@ -58,9 +58,10 @@ TODO: implement a task to generate the doc directly with a Gradle task
 ### Variables & co 
 
 wrap your **variables** and **constants** and **actions**  with *`backticks*. The state of first letter determine the type: 
-* **action** (uppercase): `ACTION`,  `ACTION 10`
-* **constant** (digit): `000`, `-1`, `+10 units`, `5` 
+* **action** (uppercase): `ACTION`,  `ACTION_10`, `NOWRAP 10` 
+* **constant** (digit): `000`, `-1`, `+10units`, `5`,  `5 nowrap` 
 * **variable** (lowercase): `variable`
+* TODO Fix the case: `10 units` test=`ACTION 10`  the spaces aren't  accepted for the moment. 
 
 ### Layout
 

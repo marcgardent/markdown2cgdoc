@@ -12,12 +12,12 @@ Thefore the size of *🧊ice floe* decrease according to the *⚡energy consumpt
 
 ### 🏆 Victory Conditions
 
-* Bring a *🐟fish*
+* Get a *🐟fish*
 * Stay on the *🧊ice floe*
 
 ### ☠️ Defeat Conditions
 
-* Not bring a *🐟fish* in due time: `50 turns`.
+* Not get a *🐟fish* in due time: `50 turns`.
 * Fall in the water.
 * No send an ACTION in due time: `10 ms`.
 * Send non-well formed output.

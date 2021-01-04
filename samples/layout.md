@@ -11,7 +11,7 @@ New rules will be added in this puzzle:
 * ignore `variables` and `ACTIONS` marked for the next leagues.
 * read the green highlight sections in next leagues.
 
-## ⚠️ Multileagues Caution LEAGUE >= 2
+## ⚠️ Multi-leagues Caution LEAGUE >= 2
 
 
 New rules are added in this league:

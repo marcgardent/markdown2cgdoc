@@ -413,7 +413,7 @@ function main() {
 
     if ($Leagues -gt 0) {
         1..($Leagues) | % {
-            export -tree $tree -subfolder "league$_/" -league $_ -debug $debug -release $release;
+            export -tree $tree -subfolder "level$_/" -league $_ -debug $debug -release $release;
         }
     }
 }

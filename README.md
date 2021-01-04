@@ -65,7 +65,7 @@ wrap your **variables** and **constants** and **actions**  with *`backticks*. Th
 
 ### Layout
 
-Use these the Emojies and the hierarchy to render correctly the document:
+Use these the Emojies and the hierarchy to render the document correctly :
 
 ```markdown 
 
@@ -153,7 +153,7 @@ Use these the Emojies and the hierarchy to render correctly the document:
 
 ```
 
-> You can change the order and remove as you want!
+> You can change the order and remove sections as you want, but respect the the hierachy
 
 ### Conditional block
 
@@ -165,6 +165,6 @@ DRY! You can append a conditional statement to handle the leagues at any header:
   * league 3 as new:green highlight
   * league 4,5,...
 
-The header is removed. but if you want to keep it add a label like this: `## my label: LEAGUE >= 3`
+The header is removed. but if you want to keep it add a label like this: `## my label: LEAGUE >= 3`.
 
 Get Started with [layout.md](./sample/layout.md)!

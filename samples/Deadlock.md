@@ -13,19 +13,19 @@ Thefore the size of *🧊ice floe* decrease according to the *⚡energy consumpt
 ### 🏆 Victory Conditions
 
 * Bring a *🐟fish*
-* Rest on the *🧊ice floe*
+* Stay on the *🧊ice floe*
 
 ### ☠️ Defeat Conditions
 
-* Not bring a *🐟fish* in due time: 50 turns.
+* Not bring a *🐟fish* in due time: `50 turns`.
 * Fall in the water.
-* No send an ACTION in due time: 10ms
+* No send an ACTION in due time: `10 ms`.
 * Send non-well formed output.
 
-### 🏅Ranking
+### 🏅 Ranking
 
 The *🐧pingouins*:
-* with a *🐟fish* are sorted by time elapsed to get a fish first score `8 points`, second `7 points`, third  `6 points`...
+* with a *🐟fish* are sorted by time elapsed to get a fish: first score `8 points`, second `7 points`, third  `6 points`...
 * without a fish score `0 points`
 * falled in the water are sorted by time elapsed on the *🧊ice floe*: first `-8 points`, second `-7 points` 
 * disqualified: score `-10 points`
@@ -39,14 +39,15 @@ Finnaly the score is multiply by number of *🐧pingouins* on the *🧊ice floe*
 The referee additionate the *⚡energy consumption* - Sum of player's velocity squared. And compute the new radius:
 
 ```speudocode
-RADIUS_MAX = 10000;
+SURFACE_MAX = 10000;
 SURFACE_FACTOR = 0.1;
+PI = 3.14;
 
 iceFloe.energyConsumed += players.ForEach( player -> player.Velocity * player.Velocity).Sum();
-iceFloe.radius = RADIUS_MAX - iceFloe.energyConsumed * SURFACE_FACTOR;
+iceFloe.radius = sqrt( (SURFACE_MAX - iceFloe.energyConsumed * SURFACE_FACTOR)/ PI);
 ```
 
-### ⛸️Motion Engine
+### ⛸️ Motion Engine
 
 player send a cartesian vector X,Y
 
@@ -61,8 +62,6 @@ VELOCITY_MAX_SQUARED = 50*50;
 ```speudocode
 ```
 
-
-
 ## ⚠️ Note
 
 ## 💡 Hint
@@ -71,19 +70,19 @@ The game is a trade off of your individual goal and collective goal.
 
 ## 🧾 Game Protocol
 
-### 👀Input for One Game Turn
+### 👀 Input for One Game Turn
 
-#### 📑Line 1: description
+#### 📑 Line 1: description
 
 line 1 full desc. `variable`
 
-### 💬Output for One Game Turn
+### 💬 Output for One Game Turn
 
-#### 📑Line 1 , no desc
+#### 📑 Line 1 , no desc
 
 line 1 full desc. `ACTION`
 
-### ⚓Constraints
+### ⚓ Constraints
 
 Allotted response time to output is ≤ `10` milliseconds.
 

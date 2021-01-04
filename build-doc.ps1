@@ -1,7 +1,7 @@
 
 $conf = @(
-    @{ name='war-of-the-eight'; source = 'war-of-the-eight/war-of-the-eight.md'; league = 0; language='en' },
-    @{name='layout';source = 'layout.md'; league = 3; language='en' },
+    @{ name='war-of-the-eight'; source = 'war-of-the-eight/war-of-the-eight.md'; league = 0; language='en' }
+    @{name='layout';source = 'layout.md'; league = 3; language='en' }
     @{name='fencing-esport';source = 'fencing-esport_en.md'; league = 3; language='en' }
     @{name='fencing-esport';source = 'fencing-esport_fr.md'; league = 3; language='fr'}
     @{name='save-pingouins';source = 'save-pingouins.md'; league = 0; language='en' }

@@ -23,7 +23,7 @@ $INSERT_REGEX = @(
 $FILTER_REGEX = '^(([^:]+)\s+)?([A-Z]+)\s*(>=|<=|==)\s*(\d)s*$';
 $HEADER_REGEX = '^(#+)\s*(.*)\s*$'
 $LINE_SPAN_REGEX = '^([^\:]*)(\:(.*))?$'
-$MATCH_CONDITIONAL_STATEMENT_REGEX = '\s*[A-Z]+\s*[>=]+\s*[0-9]+\s*$'
+$MATCH_CONDITIONAL_STATEMENT_REGEX = '\s*[A-Z]+\s*[><=]+\s*[0-9]+\s*$'
 
 #################################################################################
 $DEFAULT_PLAIN = { param ($node, $layout, $title, $content)

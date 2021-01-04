@@ -97,7 +97,7 @@ laissez-moi vous expliquer le comportement de chaque propriété :
 
 ### Assauts
 
-️#### ⚠️🟢 Attention LEAGUE == 3
+#### ⚠️🟢 Attention LEAGUE == 3
 
 N'oubliez pas ! Changez la formule pour gérer `LungeDistanceSkill` et `ParryDistanceSkill`...
 

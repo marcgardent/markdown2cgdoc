@@ -10,7 +10,9 @@ $conf = @(
 $conf | % {
     $source = "$PSScriptRoot/samples/$($_.source)";
     $basename = $_.name;
-    $dest = "$PSScriptRoot/docs/$basename";
-    Write-Host "export $source ->  to $dest .."
-    . "$PSScriptRoot/markdown2cg.ps1" -Source $source -ReviewDestination $dest -Leagues $_.league -Language $_.language;
+
+    
+    $ReviewDestination = "$PSScriptRoot/docs/$basename";
+    $ReleaseDestination = "$PSScriptRoot/dist/$basename";
+    . "$PSScriptRoot/markdown2cg.ps1" -Source $source -ReviewDestination $ReviewDestination -ReleaseDestination $ReleaseDestination -Leagues $_.league -Language $_.language;
 }

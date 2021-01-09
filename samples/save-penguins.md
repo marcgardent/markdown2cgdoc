@@ -8,16 +8,18 @@ And you have to get a *🐟fish*  in the *🕳️hole* and save the *🧊ice flo
 ## ✔️ Rules
 
 The ⚡energy consumed by the *🐧penguins* melt the *🧊ice floe*.
-Therefore the size of *🧊ice floe* decrease accordly.
+Therefore the size of *🧊ice floe* decrease accordingly.
+
 
 ### 🏆 Victory Conditions
 
-* Get a *🐟fish*
-* Stay on the *🧊ice floe*
+* Keep alive until the last turn:
+  * Get a *🐟fish*
+  * Stay on the *🧊ice floe*
 
 ### ☠️ Defeat Conditions
 
-* Not get a *🐟fish* in due time: `50` turns.
+* out of energy: Not get a *🐟fish* in due time: `50` turns.
 * Fall in the water.
 * No send an `ACTION` in due time: `10` ms.
 * Send non-well formed output.
@@ -27,7 +29,7 @@ Therefore the size of *🧊ice floe* decrease accordly.
 The *🐧penguins*:
 * with a *🐟fish* are ordered by the time elapsed to get a fish: first score `8` points, second `7` points, third  `6` points...
 * without a fish score `0 points`
-* fell in the water are ordered by time elapsed on the *🧊ice floe*: first `-8` points, second `-7` points 
+* fell in the water are ordered by time elapsed on the *🧊ice floe*: first `-1` points, second `-2` points, etc...
 * disqualified: score `-10` points
 
 Finally, the score is multiplied by the number of *🐧penguins* on the *🧊ice floe*. So the best score is `64` points and worse `80` points.

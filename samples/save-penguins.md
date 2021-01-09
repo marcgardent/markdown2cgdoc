@@ -7,8 +7,8 @@ And you have to get a *🐟fish*  in the *🕳️hole* and save the *🧊ice flo
 
 ## ✔️ Rules
 
-The movements of  *🐧penguins* melt the *🧊ice floe*.
-Therefore the size of *🧊ice floe* decrease according to their *⚡energy consumption*.
+The ⚡energy consumed by the *🐧penguins* melt the *🧊ice floe*.
+Therefore the size of *🧊ice floe* decrease accordly.
 
 ### 🏆 Victory Conditions
 
@@ -39,7 +39,7 @@ Finally, the score is multiplied by the number of *🐧penguins* on the *🧊ice
 The referee sum the *⚡energy consumption*  of the turn. And he computes the new radius:
 
 ```speudocode
-iceFloe.energyConsumed += players.ForEach( player -> player.Velocity * player.Velocity).Sum();
+iceFloe.energyConsumed += players.ForEach( player -> 1000 + player.Velocity * player.Velocity).Sum();
 iceFloe.radius = sqrt( (SURFACE_MAX - iceFloe.energyConsumed * SURFACE_FACTOR)/ PI);
 
 SURFACE_MAX = 10000;

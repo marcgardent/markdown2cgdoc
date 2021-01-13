@@ -33,9 +33,8 @@ blabla bla
 
 ### ☠️ Defeat Conditions
 
-* ...
-* send wrong statement
-* timeout
+* You attempt to make an illegal move.
+* You do not provide an output in the alloted time.
 
 ### Custom section
 
@@ -55,7 +54,7 @@ content
 
 ## 💡 Hint
 
-content
+* open the settings panel !(https://www.codingame.com/servlet/fileservlet?id=3463235186409)
 
 ## lambda Section
 

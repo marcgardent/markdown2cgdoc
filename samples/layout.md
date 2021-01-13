@@ -65,13 +65,6 @@ content
 |row0   | `var1`    | `var2`    | `var3`    |
 |row1   | `var4`    | `var5`    | hello     |
 
-{.marked}
-| Col0  | Col1      | Col2      | Col3      |
-|-------|-----------|-----------|-----------|
-|row0   | `var1`    | `var2`    | `var3`    |
-|row1   | `var4`    | `var5`    | hello     |
-
-
 parsed:
 
 * action: `ACTION`

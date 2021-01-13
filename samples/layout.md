@@ -54,7 +54,7 @@ content
 
 ## 💡 Hint
 
-* open the settings panel !(https://www.codingame.com/servlet/fileservlet?id=3463235186409)
+* open the settings panel ![gear icon](https://www.codingame.com/servlet/fileservlet?id=3463235186409)
 
 ## lambda Section
 
